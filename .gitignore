@@ -1,0 +1,52 @@
+﻿# Secrets and environment configuration
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Python generated files
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+venv/
+.venv/
+ENV/
+env/
+
+# Build outputs and binaries
+build/
+dist/
+*.dll
+*.exe
+*.pyd
+*.msi
+
+# Local models
+*.gguf
+models/
+
+# Local databases and application state
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Logs and caches
+*.log
+logs/
+voice_cache/
+webengine_cache/
+.cache/
+
+# IDE and generated project metadata
+.vscode/
+.idea/
+.codeatlas/

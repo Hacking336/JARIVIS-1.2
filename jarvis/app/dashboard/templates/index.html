@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J.A.R.V.I.S. - Personal AI Control Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <span class="logo-icon">J</span>
+                    <span class="logo-text">JARVIS</span>
+                    <span class="logo-sub">Just A Rather Very Intelligent System</span>
+                </div>
+                <div class="status-indicator" id="systemStatus">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span class="status-text" id="statusText">INITIALIZING</span>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="time-display" id="timeDisplay">00:00:00</div>
+                <div class="uptime-display" id="uptimeDisplay">UPTIME: 00:00:00</div>
+            </div>
+            <div class="header-right">
+                <div class="quick-stats">
+                    <div class="stat" id="cpuStat">
+                        <span class="stat-label">CPU</span>
+                        <span class="stat-value" id="cpuValue">0%</span>
+                    </div>
+                    <div class="stat" id="ramStat">
+                        <span class="stat-label">RAM</span>
+                        <span class="stat-value" id="ramValue">0%</span>
+                    </div>
+                    <div class="stat" id="netStat">
+                        <span class="stat-label">NET</span>
+                        <span class="stat-value" id="netValue">●</span>
+                    </div>
+                </div>
+                <button class="btn-icon" id="settingsBtn" title="Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <aside class="sidebar" id="sidebar">
+                <nav class="nav">
+                    <button class="nav-item active" data-tab="system" aria-label="System Overview">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                        <span>SYSTEM</span>
+                    </button>
+                    <button class="nav-item" data-tab="assistant" aria-label="AI Assistant">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 8V4H8"></path>
+                            <rect x="2" y="14" width="20" height="8" rx="2"></rect>
+                            <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01"></path>
+                        </svg>
+                        <span>ASSISTANT</span>
+                    </button>
+                    <button class="nav-item" data-tab="email" aria-label="Email Center">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <span>EMAIL</span>
+                    </button>
+                    <button class="nav-item" data-tab="apps" aria-label="Applications">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="7" height="7"></rect>
+                            <rect x="15" y="3" width="7" height="7"></rect>
+                            <rect x="2" y="14" width="7" height="7"></rect>
+                            <rect x="15" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span>APPS</span>
+                    </button>
+                    <button class="nav-item" data-tab="alerts" aria-label="Alert Center">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        <span>ALERTS</span>
+                    </button>
+                    <button class="nav-item" data-tab="activity" aria-label="Activity Log">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span>ACTIVITY</span>
+                    </button>
+                </nav>
+                <div class="sidebar-footer">
+                    <div class="version-info">v1.0.0</div>
+                    <div class="connection-status" id="connectionStatus">
+                        <span class="conn-dot"></span>
+                        <span>CONNECTED</span>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="content-area" id="contentArea">
+                <!-- HOME / HOLOGRAPHIC SCREEN -->
+                <div class="tab-panel active" id="systemPanel">
+                    <div class="hologram-container" id="hologramContainer">
+                        <canvas class="hologram-canvas" id="hologramCanvas" aria-label="JARVIS Holographic Interface"></canvas>
+
+                        <div class="hologram-overlay">
+                            <div class="hologram-header">
+                                <div class="hologram-title">
+                                    <span class="title-main">JARVIS</span>
+                                    <span class="title-sub">Just A Rather Very Intelligent System</span>
+                                </div>
+                                <div class="hologram-greeting" id="hologramGreeting"></div>
+                            </div>
+
+                            <div class="hologram-status-panel" id="hologramStatusPanel">
+                                <div class="status-item">
+                                    <span class="status-label">CONNECTION</span>
+                                    <span class="status-value" id="holoConnStatus">
+                                        <span class="status-dot-sm" id="holoConnDot"></span>
+                                        CONNECTED
+                                    </span>
+                                </div>
+                                <div class="status-item">
+                                    <span class="status-label">AI MODEL</span>
+                                    <span class="status-value" id="holoModelStatus">LOCAL (QWEN3:1.7B)</span>
+                                </div>
+                                <div class="status-item">
+                                    <span class="status-label">MICROPHONE</span>
+                                    <span class="status-value" id="holoMicStatus">
+                                        <span class="status-dot-sm" id="holoMicDot"></span>
+                                        READY
+                                    </span>
+                                </div>
+                                <div class="status-item">
+                                    <span class="status-label">SPEAKER</span>
+                                    <span class="status-value" id="holoSpeakerStatus">
+                                        <span class="status-dot-sm" id="holoSpeakerDot"></span>
+                                        READY
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="hologram-voice-controls" id="hologramVoiceControls">
+                                <button class="btn-holo-voice" id="holoListenBtn" title="Start Listening" aria-label="Start voice input">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                        <line x1="12" y1="19" x2="12" y2="22"></line>
+                                    </svg>
+                                    <span>LISTEN</span>
+                                </button>
+                                <button class="btn-holo-voice btn-holo-mute" id="holoMuteBtn" title="Mute/Unmute Voice" aria-label="Toggle voice output">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                    </svg>
+                                    <span>MUTE</span>
+                                </button>
+                                <button class="btn-holo-voice btn-holo-test" id="holoTestBtn" title="Test Voice" aria-label="Test voice output">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                                        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                                    </svg>
+                                    <span>TEST</span>
+                                </button>
+                            </div>
+
+                            <div class="hologram-activation" id="hologramActivation" style="display: none;">
+                                <button class="btn-activate" id="activateVoiceBtn">ACTIVATE JARVIS VOICE</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Original System Overview Panel (hidden by default on home) -->
+                    <div class="system-details-panel" id="systemDetailsPanel">
+                        <div class="panel-header">
+                            <h2>SYSTEM OVERVIEW</h2>
+                            <div class="panel-actions">
+                                <button class="btn-secondary" id="refreshSystem">REFRESH</button>
+                            </div>
+                        </div>
+                        <div class="grid grid-4" id="systemGrid">
+                            <div class="card metric-card cpu-card">
+                                <div class="card-header">
+                                    <span class="card-title">CPU UTILIZATION</span>
+                                    <span class="card-badge" id="cpuBadge">NOMINAL</span>
+                                </div>
+                                <div class="metric-value" id="cpuMetric">0%</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="cpuProgress" style="width: 0%"></div>
+                                </div>
+                                <div class="metric-details">
+                                    <span id="cpuCores">0 CORES</span>
+                                    <span id="cpuFreq">0 MHz</span>
+                                </div>
+                                <canvas class="mini-chart" id="cpuChart" width="200" height="60"></canvas>
+                            </div>
+                            <div class="card metric-card ram-card">
+                                <div class="card-header">
+                                    <span class="card-title">MEMORY USAGE</span>
+                                    <span class="card-badge" id="ramBadge">NOMINAL</span>
+                                </div>
+                                <div class="metric-value" id="ramMetric">0%</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="ramProgress" style="width: 0%"></div>
+                                </div>
+                                <div class="metric-details">
+                                    <span id="ramUsed">0 GB / 0 GB</span>
+                                </div>
+                                <canvas class="mini-chart" id="ramChart" width="200" height="60"></canvas>
+                            </div>
+                            <div class="card metric-card disk-card">
+                                <div class="card-header">
+                                    <span class="card-title">DISK STORAGE</span>
+                                    <span class="card-badge" id="diskBadge">NOMINAL</span>
+                                </div>
+                                <div class="metric-value" id="diskMetric">0%</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="diskProgress" style="width: 0%"></div>
+                                </div>
+                                <div class="metric-details">
+                                    <span id="diskFree">0 GB FREE</span>
+                                </div>
+                                <div class="disk-list" id="diskList"></div>
+                            </div>
+                            <div class="card metric-card battery-card">
+                                <div class="card-header">
+                                    <span class="card-title">POWER STATUS</span>
+                                    <span class="card-badge" id="batteryBadge">NOMINAL</span>
+                                </div>
+                                <div class="metric-value" id="batteryMetric">N/A</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="batteryProgress" style="width: 0%"></div>
+                                </div>
+                                <div class="metric-details">
+                                    <span id="batteryStatus">UNKNOWN</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-2">
+                            <div class="card chart-card">
+                                <div class="card-header">
+                                    <span class="card-title">CPU HISTORY (5 MIN)</span>
+                                </div>
+                                <canvas class="chart" id="cpuHistoryChart" width="500" height="200"></canvas>
+                            </div>
+                            <div class="card chart-card">
+                                <div class="card-header">
+                                    <span class="card-title">MEMORY HISTORY (5 MIN)</span>
+                                </div>
+                                <canvas class="chart" id="ramHistoryChart" width="500" height="200"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">NETWORK INTERFACES</span>
+                            </div>
+                            <div class="table-container">
+                                <table class="data-table" id="networkTable">
+                                    <thead>
+                                        <tr>
+                                            <th>INTERFACE</th>
+                                            <th>STATUS</th>
+                                            <th>IPv4</th>
+                                            <th>SENT</th>
+                                            <th>RECEIVED</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="networkTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">SYSTEM INFORMATION</span>
+                            </div>
+                            <div class="sysinfo-grid" id="sysInfoGrid"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-panel" id="assistantPanel">
+                    <div class="panel-header">
+                        <h2>AI ASSISTANT</h2>
+                        <div class="panel-actions">
+                            <div class="assistant-status" id="assistantStatus">
+                                <span class="status-dot" id="assistantStatusDot"></span>
+                                <span id="assistantStatusText">IDLE</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="assistant-container">
+                        <div class="conversation-area" id="conversationArea">
+                            <div class="messages" id="messages"></div>
+                        </div>
+                        <div class="input-area">
+                            <div class="voice-controls">
+                                <button class="btn-icon btn-voice" id="listenBtn" title="Start Listening" aria-label="Start voice input">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                        <line x1="12" y1="19" x2="12" y2="22"></line>
+                                    </svg>
+                                </button>
+                                <button class="btn-icon btn-voice speaking" id="speakBtn" title="Speak Response" aria-label="Speak last response" disabled>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                    </svg>
+                                </button>
+                                <button class="btn-icon btn-voice danger" id="stopSpeakBtn" title="Stop Speaking" aria-label="Stop speech output" disabled>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="text-input-wrapper">
+                                <input type="text" id="textInput" placeholder="Enter command or ask a question..." autocomplete="off">
+                                <button class="btn-primary" id="sendBtn">SEND</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-panel" id="emailPanel">
+                    <div class="panel-header">
+                        <h2>EMAIL CENTER</h2>
+                        <div class="panel-actions">
+                            <select class="select" id="emailAccountSelect">
+                                <option value="">SELECT ACCOUNT</option>
+                            </select>
+                            <button class="btn-secondary" id="refreshEmails">REFRESH</button>
+                            <button class="btn-secondary" id="connectEmailBtn">CONNECT ACCOUNT</button>
+                        </div>
+                    </div>
+                    <div class="email-container">
+                        <div class="email-list-wrapper">
+                            <div class="email-toolbar">
+                                <input type="text" class="search-input" id="emailSearch" placeholder="Search emails...">
+                                <label class="checkbox-wrapper">
+                                    <input type="checkbox" id="unreadOnly"> UNREAD ONLY
+                                </label>
+                            </div>
+                            <div class="email-list" id="emailList">
+                                <div class="empty-state">No email accounts connected</div>
+                            </div>
+                        </div>
+                        <div class="email-detail" id="emailDetail">
+                            <div class="empty-state">Select an email to view</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-panel" id="appsPanel">
+                    <div class="panel-header">
+                        <h2>APPLICATION MONITOR</h2>
+                        <div class="panel-actions">
+                            <button class="btn-secondary" id="refreshProcesses">REFRESH</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">RUNNING PROCESSES</span>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table" id="processTable">
+                                <thead>
+                                    <tr>
+                                        <th>PID</th>
+                                        <th>NAME</th>
+                                        <th>CPU %</th>
+                                        <th>MEM %</th>
+                                        <th>MEM (MB)</th>
+                                        <th>STATUS</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="processTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">APPROVED APPLICATIONS</span>
+                        </div>
+                        <div class="app-grid" id="appGrid"></div>
+                    </div>
+                </div>
+
+                <div class="tab-panel" id="alertsPanel">
+                    <div class="panel-header">
+                        <h2>ALERT CENTER</h2>
+                        <div class="panel-actions">
+                            <button class="btn-secondary" id="refreshAlerts">REFRESH</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="alerts-list" id="alertsList">
+                            <div class="empty-state">No active alerts</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-panel" id="activityPanel">
+                    <div class="panel-header">
+                        <h2>ACTIVITY LOG</h2>
+                        <div class="panel-actions">
+                            <button class="btn-secondary" id="refreshActivity">REFRESH</button>
+                            <button class="btn-secondary" id="clearActivity">CLEAR</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="activity-list" id="activityList">
+                            <div class="empty-state">No activity recorded</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>SETTINGS</h3>
+                <button class="btn-icon" id="closeSettings">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-tabs">
+                    <button class="settings-tab active" data-settings-tab="ai">AI PROVIDER</button>
+                    <button class="settings-tab" data-settings-tab="voice">VOICE</button>
+                    <button class="settings-tab" data-settings-tab="email">EMAIL</button>
+                    <button class="settings-tab" data-settings-tab="monitoring">MONITORING</button>
+                    <button class="settings-tab" data-settings-tab="privacy">PRIVACY</button>
+                </div>
+                <div class="settings-panels">
+                    <div class="settings-panel active" id="aiSettings">
+                        <div class="setting-group">
+                            <label>AI PROVIDER</label>
+                            <select class="select" id="aiProviderSelect">
+                                <option value="local">LOCAL (OLLAMA)</option>
+                                <option value="cloud">CLOUD (OPENAI/ANTHROPIC)</option>
+                            </select>
+                        </div>
+                        <div class="setting-group" id="localAiSettings">
+                            <label>LOCAL ENDPOINT</label>
+                            <input type="text" class="input" id="localAiUrl" placeholder="http://localhost:11434/v1">
+                            <label>MODEL</label>
+                            <input type="text" class="input" id="localAiModel" placeholder="qwen3:1.7b">
+                        </div>
+                        <div class="setting-group" id="cloudAiSettings" style="display: none;">
+                            <label>API KEY</label>
+                            <input type="password" class="input" id="cloudAiKey" placeholder="Enter API key">
+                            <label>MODEL</label>
+                            <input type="text" class="input" id="cloudAiModel" placeholder="gpt-4o-mini">
+                            <label>BASE URL (OPTIONAL)</label>
+                            <input type="text" class="input" id="cloudAiUrl" placeholder="https://api.openai.com/v1">
+                        </div>
+                        <button class="btn-primary" id="saveAiSettings">SAVE AI SETTINGS</button>
+                    </div>
+                    <div class="settings-panel" id="voiceSettings">
+                        <div class="setting-group">
+                            <label>FISH AUDIO API KEY</label>
+                            <input type="password" class="input" id="fishAudioKey" placeholder="Enter Fish Audio API key">
+                        </div>
+                        <div class="setting-group">
+                            <label>VOICE MODEL ID</label>
+                            <input type="text" class="input" id="fishAudioModel" value="14129c3e320149449d6bada6862f7338" readonly>
+                        </div>
+                        <div class="setting-group">
+                            <label>SPEED</label>
+                            <input type="range" class="slider" id="voiceSpeed" min="0.5" max="2.0" step="0.1" value="1.0">
+                            <span id="voiceSpeedValue">1.0x</span>
+                        </div>
+                        <div class="setting-group">
+                            <label>SAMPLE RATE</label>
+                            <select class="select" id="sampleRate">
+                                <option value="22050">22050 Hz</option>
+                                <option value="44100" selected>44100 Hz</option>
+                                <option value="48000">48000 Hz</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary" id="saveVoiceSettings">SAVE VOICE SETTINGS</button>
+                    </div>
+                    <div class="settings-panel" id="emailSettings">
+                        <div class="setting-group">
+                            <h4>GMAIL OAUTH</h4>
+                            <label>CLIENT ID</label>
+                            <input type="text" class="input" id="gmailClientId" placeholder="Google OAuth Client ID">
+                            <label>CLIENT SECRET</label>
+                            <input type="password" class="input" id="gmailClientSecret" placeholder="Google OAuth Client Secret">
+                            <button class="btn-secondary" id="connectGmail">CONNECT GMAIL</button>
+                        </div>
+                        <div class="setting-group">
+                            <h4>OUTLOOK OAUTH</h4>
+                            <label>CLIENT ID</label>
+                            <input type="text" class="input" id="outlookClientId" placeholder="Microsoft OAuth Client ID">
+                            <label>CLIENT SECRET</label>
+                            <input type="password" class="input" id="outlookClientSecret" placeholder="Microsoft OAuth Client Secret">
+                            <label>TENANT ID</label>
+                            <input type="text" class="input" id="outlookTenantId" placeholder="common">
+                            <button class="btn-secondary" id="connectOutlook">CONNECT OUTLOOK</button>
+                        </div>
+                    </div>
+                    <div class="settings-panel" id="monitoringSettings">
+                        <div class="setting-group">
+                            <label>SYSTEM REFRESH INTERVAL (SEC)</label>
+                            <input type="number" class="input" id="monitorInterval" value="2" min="1" max="60">
+                        </div>
+                        <div class="setting-group">
+                            <label>PROCESS REFRESH INTERVAL (SEC)</label>
+                            <input type="number" class="input" id="processInterval" value="5" min="1" max="120">
+                        </div>
+                        <div class="setting-group">
+                            <label>NETWORK REFRESH INTERVAL (SEC)</label>
+                            <input type="number" class="input" id="networkInterval" value="3" min="1" max="120">
+                        </div>
+                        <div class="setting-group">
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="gpuMonitoring"> ENABLE GPU MONITORING
+                            </label>
+                        </div>
+                        <button class="btn-primary" id="saveMonitoringSettings">SAVE MONITORING SETTINGS</button>
+                    </div>
+                    <div class="settings-panel" id="privacySettings">
+                        <div class="setting-group">
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="desktopNotifications" checked> DESKTOP NOTIFICATIONS
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="notificationSound" checked> NOTIFICATION SOUNDS
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>SESSION TIMEOUT (SEC)</label>
+                            <input type="number" class="input" id="sessionTimeout" value="3600" min="300" max="86400">
+                        </div>
+                        <button class="btn-danger" id="clearData">CLEAR ALL LOCAL DATA</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal modal-confirm">
+            <div class="modal-header">
+                <h3 id="confirmTitle">CONFIRM ACTION</h3>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="confirmCancel">CANCEL</button>
+                <button class="btn-danger" id="confirmOk">CONFIRM</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="ttsAudio" preload="none"></audio>
+
+    <script type="module" src="/static/js/main.js"></script>
+</body>
+</html>
